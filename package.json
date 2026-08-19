@@ -1,16 +1,8 @@
 {
-  "name": "homebridge-spotify-smart-speaker",
+  "name": "homebridge-test-speakers",
   "version": "1.0.0",
-  "displayName": "Homebridge Spotify Smart Speaker",
-  "description": "Control Spotify Connect devices as Smart Speakers in HomeKit",
-  "main": "dist/index.js",
-  "scripts": {
-    "build": "tsc",
-    "watch": "tsc -w",
-    "lint": "echo 'No linting required'",
-    "prepare": "npm run build",
-    "prepublishOnly": "npm run build"
-  },
+  "description": "Testowe akcesoria głośników dla Homebridge",
+  "main": "index.js",
   "keywords": [
     "homebridge-plugin"
   ],
@@ -18,13 +10,5 @@
     "node": ">=18.0.0",
     "homebridge": ">=1.6.0"
   },
-  "dependencies": {
-    "spotify-web-api-node": "^5.0.2",
-    "typescript": "^5.0.0"
-  },
-  "devDependencies": {
-    "@types/node": "^18.15.0",
-    "@types/spotify-web-api-node": "^5.0.11",
-    "homebridge": "^1.6.0"
-  }
+  "dependencies": {}
 }
