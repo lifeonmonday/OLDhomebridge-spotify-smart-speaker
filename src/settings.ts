@@ -1,9 +1,9 @@
 /**
- * This is the name of the platform that users will use to register the plugin in the Homebridge config.json
+ * This must match the 'name' in your package.json
  */
-export const PLATFORM_NAME = 'ExampleHomebridgePlugin';
+export const PLUGIN_NAME = 'homebridge-spotify-smart-speaker';
 
 /**
- * This must match the name of your plugin as defined the package.json `name` property
+ * This must match the platform name used in Homebridge's config.json
  */
-export const PLUGIN_NAME = 'homebridge-plugin-name';
+export const PLATFORM_NAME = 'SpotifySmartSpeaker';
