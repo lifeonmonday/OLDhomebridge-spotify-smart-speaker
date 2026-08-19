@@ -3,12 +3,7 @@
   "version": "1.0.0",
   "displayName": "Homebridge Spotify Smart Speaker",
   "description": "Control Spotify Connect devices as Smart Speakers in HomeKit",
-  "main": "dist/index.js",
-  "scripts": {
-    "build": "tsc",
-    "watch": "tsc -w",
-    "prepublishOnly": "npm run build"
-  },
+  "main": "index.js",
   "keywords": [
     "homebridge-plugin"
   ],
@@ -18,10 +13,5 @@
   },
   "dependencies": {
     "spotify-web-api-node": "^5.0.2"
-  },
-  "devDependencies": {
-    "@types/node": "^18.15.0",
-    "homebridge": "^1.6.0",
-    "typescript": "^5.0.0"
   }
 }

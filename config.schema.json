@@ -5,7 +5,8 @@
   "headerDisplay": "Configure your Spotify API credentials and target device.",
   "schema": {
     "type": "object",
-    "properties": { "name": {
+    "properties": {
+      "name": {
         "title": "Platform Name",
         "type": "string",
         "default": "SpotifySmartSpeaker",
@@ -29,7 +30,7 @@
       "deviceId": {
         "title": "Spotify Target Device ID",
         "type": "string",
-        "description": "The Spotify Connect ID for your target speaker or Nest group.",
+        "description": "The Spotify Connect ID for your target speaker.",
         "required": true
       }
     }
