@@ -13,13 +13,20 @@ class TestSpeakersPlatform {
     this.config = config;
     this.api = api;
 
-    this.accessories = [];
+    this.accessories = []; // Przechowuje zarejestrowane akcesoria
 
-    // Po załadowaniu Homebridge rejestrujemy akcesoria testowe
-    this.api.on('didFinishLaunching', () => {
-      this.addStandardSpeaker();
-      this.addTVSpeaker();
-    });
+    if (api) {
+      // Wywołanie wydarzenia po załadowaniu Homebridge
+      this.api.on('didFinishLaunching', () => {
+        this.addStandardSpeaker();
+        this.addTVSpeaker();
+      });
+    }
+  }
+
+  // Wymagana metoda dla wtyczek typu Dynamic Platform (obsługuje cache)
+  configureAccessory(accessory) {
+    this.accessories.push(accessory);
   }
 
   // --- 1. ZWYKŁY GŁOŚNIK (Service.Speaker + Volume) ---
@@ -32,7 +39,6 @@ class TestSpeakersPlatform {
 
     const speakerService = accessory.addService(Service.Speaker, "Głośnik Zwykły");
 
-    // Dodanie cechy Mute
     speakerService.getCharacteristic(Characteristic.Mute)
       .onGet(() => isMuted)
       .onSet((value) => {
@@ -40,7 +46,6 @@ class TestSpeakersPlatform {
         this.log.info(`[Głośnik Zwykły] Mute: ${isMuted}`);
       });
 
-    // Dodanie dodatkowej cechy Volume (widocznej w Eve / do scen w App Dom)
     speakerService.addCharacteristic(Characteristic.Volume)
       .onGet(() => currentVolume)
       .onSet((value) => {
@@ -55,7 +60,13 @@ class TestSpeakersPlatform {
   // --- 2. GŁOŚNIK TV (Service.Television + Service.TelevisionSpeaker) ---
   addTVSpeaker() {
     const uuid = this.api.hap.uuid.generate("test-tv-speaker");
-    const accessory = new this.api.platformAccessory("Testowy TV Głośnik", uuid);
+    
+    // Ważne: Akcesoria TV w Homebridge wymagają kategorii TELEVISION
+    const accessory = new this.api.platformAccessory(
+      "Testowy TV Głośnik", 
+      uuid, 
+      this.api.hap.Categories.TELEVISION
+    );
 
     let tvPower = false;
     let tvVolume = 30;
@@ -84,13 +95,11 @@ class TestSpeakersPlatform {
       Characteristic.Active.ACTIVE
     );
 
-    // Określamy typ kontroli jako ABSOLUTE (0-100%)
     tvSpeakerService.setCharacteristic(
       Characteristic.VolumeControlType,
       Characteristic.VolumeControlType.ABSOLUTE
     );
 
-    // Mute
     tvSpeakerService.getCharacteristic(Characteristic.Mute)
       .onGet(() => tvMuted)
       .onSet((value) => {
@@ -98,7 +107,6 @@ class TestSpeakersPlatform {
         this.log.info(`[Głośnik TV] Mute: ${tvMuted}`);
       });
 
-    // Volume (aktywne m.in. dla automatyzacji i aplikacji firm trzecich)
     tvSpeakerService.addCharacteristic(Characteristic.Volume)
       .onGet(() => tvVolume)
       .onSet((value) => {
@@ -106,21 +114,20 @@ class TestSpeakersPlatform {
         this.log.info(`[Głośnik TV] Ustawiono głośność: ${tvVolume}%`);
       });
 
-    // Obsługa bocznych przycisków głośności z pilota iOS (VolumeSelector)
     tvSpeakerService.getCharacteristic(Characteristic.VolumeSelector)
       .onSet((value) => {
-        const step = 5; // krok głośności przy kliknięciu przycisku +/-
+        const step = 5;
         if (value === Characteristic.VolumeSelector.INCREMENT) {
           tvVolume = Math.min(100, tvVolume + step);
         } else if (value === Characteristic.VolumeSelector.DECREMENT) {
           tvVolume = Math.max(0, tvVolume - step);
         }
-        this.log.info(`[Głośnik TV] Przycisk fizyczny (+/-) wywołany. Nowa głośność: ${tvVolume}%`);
+        this.log.info(`[Głośnik TV] Przycisk fizyczny (+/-). Nowa głośność: ${tvVolume}%`);
       });
 
-    // Powiązanie usługi Speaker z usługą TV
     tvService.addLinkedService(tvSpeakerService);
 
+    // Akcesoria TV rejestrujemy jako External Accessories, aby iOS poprawnie je wykrył jako TV
     this.api.registerPlatformAccessories("homebridge-test-speakers", "TestSpeakersPlatform", [accessory]);
     this.log.info("Zarejestrowano: TV Głośnik");
   }
