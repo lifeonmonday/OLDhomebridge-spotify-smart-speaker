@@ -1,17 +1,36 @@
 {
-  "pluginAlias": "ExampleHomebridgePlugin",
+  "pluginAlias": "SpotifySmartSpeaker",
   "pluginType": "platform",
   "singular": true,
-  "strictValidation": false,
+  "headerDisplay": "Configure your Spotify API credentials and target device.",
   "schema": {
     "type": "object",
-    "required": ["name"],
-    "additionalProperties": false,
-    "properties": {
-      "name": {
-        "title": "Name",
+    "properties": { "name": {
+        "title": "Platform Name",
         "type": "string",
-        "default": "Example Dynamic Platform"
+        "default": "SpotifySmartSpeaker",
+        "required": true
+      },
+      "clientId": {
+        "title": "Spotify Client ID",
+        "type": "string",
+        "required": true
+      },
+      "clientSecret": {
+        "title": "Spotify Client Secret",
+        "type": "string",
+        "required": true
+      },
+      "refreshToken": {
+        "title": "Spotify Refresh Token",
+        "type": "string",
+        "required": true
+      },
+      "deviceId": {
+        "title": "Spotify Target Device ID",
+        "type": "string",
+        "description": "The Spotify Connect ID for your target speaker or Nest group.",
+        "required": true
       }
     }
   }
