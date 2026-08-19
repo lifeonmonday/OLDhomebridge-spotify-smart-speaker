@@ -7,6 +7,8 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
+    "lint": "echo 'No linting required'",
+    "prepare": "npm run build",
     "prepublishOnly": "npm run build"
   },
   "keywords": [
@@ -17,17 +19,12 @@
     "homebridge": ">=1.6.0"
   },
   "dependencies": {
-    "spotify-web-api-node": "^5.0.2"
+    "spotify-web-api-node": "^5.0.2",
+    "typescript": "^5.0.0"
   },
   "devDependencies": {
     "@types/node": "^18.15.0",
-    "homebridge": "^1.6.0",
-    "typescript": "^5.0.0"
-  },
-  "scripts": {
-  "build": "tsc",
-  "watch": "tsc -w",
-  "prepare": "npm run build",
-  "prepublishOnly": "npm run build"
-}
+    "@types/spotify-web-api-node": "^5.0.11",
+    "homebridge": "^1.6.0"
+  }
 }
